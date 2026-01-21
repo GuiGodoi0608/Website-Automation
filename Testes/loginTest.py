@@ -26,7 +26,14 @@ class Login:
         passwordFrom.send_keys(Validpassword)
         loginBttn = self.driver.find_element(By.ID, "login-button")
         loginBttn.click()
+        wait = WebDriverWait(self.driver, 10).until(EC.url_matches(self.url + "inventory.html"))
         time.sleep(3)
+
+        if wait == True:
+            print(f'Login success')
+        else:
+            print(f'Failed')
+        
         self.closeBrowser()
 
 
@@ -42,8 +49,15 @@ class Login:
         loginBttn = self.driver.find_element(By.ID, "login-button")
         loginBttn.click()
         time.sleep(3)
+        warning = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.XPATH, "/html/body/div/div/div[2]/div[1]/div/div/form/div[3]/h3")))
+        if warning == True:
+            print(f'warning visible')
+        else:
+            print(f'no warnings')
+        time.sleep(3)
         self.closeBrowser()
 
 
 login = Login()
 login.InvalidLogin()
+
