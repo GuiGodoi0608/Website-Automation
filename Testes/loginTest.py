@@ -27,7 +27,6 @@ class Login:
         loginBttn = self.driver.find_element(By.ID, "login-button")
         loginBttn.click()
         wait = WebDriverWait(self.driver, 10).until(EC.url_matches(self.url + "inventory.html"))
-        time.sleep(3)
 
         if wait == True:
             print(f'Login success')
@@ -48,16 +47,28 @@ class Login:
         invalPassword.send_keys(invalidPassword)
         loginBttn = self.driver.find_element(By.ID, "login-button")
         loginBttn.click()
-        time.sleep(3)
-        warning = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.XPATH, "/html/body/div/div/div[2]/div[1]/div/div/form/div[3]/h3")))
-        if warning == True:
-            print(f'warning visible')
-        else:
-            print(f'no warnings')
-        time.sleep(3)
+        warning = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.XPATH, "//h3[@data-test='error']")))
+        print(warning.text, " - Login failed as expected")
+
+
+    def performanceUser(self):
+        performanceUser = "performance_glitch_user"
+        password = "secret_sauce"
+        self.driver.get(self.url)
+        PFuser = self.driver.find_element(By.ID, "user-name")
+        PFuser.send_keys(performanceUser)
+        PFuserpassword  = self.driver.find_element(By.ID, "password")
+        PFuserpassword.send_keys(password)
+        loginButton = self.driver.find_element(By.ID, "login-button")
+        loginButton.click()
+        startTime = time.perf_counter()
+        nextPage = WebDriverWait(self.driver, 20).until(EC.url_contains, "inventory.html")
+        endTime = time.perf_counter()
+        duration = startTime - endTime
+        print(f'The time for the application was {duration :.6f}')
         self.closeBrowser()
 
 
 login = Login()
-login.InvalidLogin()
+login.performanceUser()
 
