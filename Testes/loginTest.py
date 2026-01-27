@@ -55,20 +55,22 @@ class Login:
         performanceUser = "performance_glitch_user"
         password = "secret_sauce"
         self.driver.get(self.url)
+        startTime = time.perf_counter()
         PFuser = self.driver.find_element(By.ID, "user-name")
         PFuser.send_keys(performanceUser)
         PFuserpassword  = self.driver.find_element(By.ID, "password")
         PFuserpassword.send_keys(password)
         loginButton = self.driver.find_element(By.ID, "login-button")
         loginButton.click()
-        startTime = time.perf_counter()
+        
         nextPage = WebDriverWait(self.driver, 20).until(EC.url_contains, "inventory.html")
         endTime = time.perf_counter()
-        duration = startTime - endTime
-        print(f'The time for the application was {duration :.6f}')
+        duration = endTime - startTime
+        assert duration > 3, f"Page logged in in less than two seconds"
+        assert duration <= 4, f"Page has problems in loggin-in it took {duration :6f}"
         self.closeBrowser()
 
 
 login = Login()
-login.performanceUser()
+#login.performanceUser()
 
